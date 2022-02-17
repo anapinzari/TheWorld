@@ -96,7 +96,86 @@ namespace TheWorld
             Country[] countries = new Country[]
             {
                 new Country("Moldova", districts)
-            };          
+            };
+
+            SortCitiesByPopulation(cities, (c1, c2) => c1.NumberOfCitizens > c2.NumberOfCitizens);
+            SortCommunesByPopulation(communes, (c1, c2) => { return c1.NumberOfCitizens > c2.NumberOfCitizens; });
+            SortCitizensByAGe(citizens, (c1, c2) => { return c1.Age > c2.Age; });
+        }
+
+        delegate bool SwapCitiesByPopulation(City c1, City c2);
+        private static void SortCitiesByPopulation(City[] cities, SwapCitiesByPopulation @delegate)
+        {
+            if (cities == null) throw new Exception("NULL");
+            if (cities.Length <= 1) return;
+            for (int i = 0; i < cities.Length - 1; i++)
+                for (int j = i + 1; j < cities.Length; j++)
+                {
+                    if (@delegate(cities[i], cities[j]))
+                    {
+                        City temp = cities[i];
+                        cities[i] = cities[j];
+                        cities[j] = temp;
+                    }
+                }
+
+            ShowTheResult(cities);
+        }
+
+        delegate bool SwapCommunesByPopulation(Commune c1, Commune c2);
+        private static void SortCommunesByPopulation(Commune[] communes, SwapCommunesByPopulation @delegate)
+        {
+            if (communes == null) throw new Exception("NULL");
+            if (communes.Length <= 1) return;
+            for (int i = 0; i < communes.Length - 1; i++)
+                for (int j = i + 1; j < communes.Length; j++)
+                {
+                    if (@delegate(communes[i], communes[j]))
+                    {
+                        Commune temp = communes[i];
+                        communes[i] = communes[j];
+                        communes[j] = temp;
+                    }
+                }
+
+            ShowTheResult(communes);
+        }
+
+        delegate bool SwapCitizensByAge(Citizen c1, Citizen c2);
+        private static void SortCitizensByAGe(Citizen[] citizens, SwapCitizensByAge @delegate)
+        {
+            if (citizens == null) throw new Exception("NULL");
+            if (citizens.Length <= 1) return;
+            for (int i = 0; i < citizens.Length - 1; i++)
+                for (int j = i + 1; j < citizens.Length; j++)
+                {
+                    if (@delegate(citizens[i], citizens[j]))
+                    {
+                        Citizen temp = citizens[i];
+                        citizens[i] = citizens[j];
+                        citizens[j] = temp;
+                    }
+                }
+
+            ShowTheResult(citizens);
+        }
+
+        private static void ShowTheResult(Citizen[] citizens)
+        {
+            for (int i = 0; i < citizens.Length; i++) Console.WriteLine($"{citizens[i].FirstName} - {citizens[i].Age}");
+            Console.WriteLine();
+        }
+
+        private static void ShowTheResult(Commune[] communes)
+        {
+            for (int i = 0; i < communes.Length; i++) Console.WriteLine($"{communes[i].Name} - {communes[i].NumberOfCitizens}.");
+            Console.WriteLine();
+        }
+
+        private static void ShowTheResult(City[] cities)
+        {
+            for (int i = 0; i < cities.Length; i++) Console.WriteLine($"{cities[i].Name} - {cities[i].NumberOfCitizens}");
+            Console.WriteLine();
         }
     }
 }
